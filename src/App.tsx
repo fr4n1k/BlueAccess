@@ -3,14 +3,13 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { useBluetooth } from './src/hooks/useBluetooth';
-import { useDeviceId } from './src/hooks/useDeviceId';
-import { usePermissions } from './src/hooks/usePermissions';
-import { DeviceList } from './src/components/DeviceList';
-import { ConnectionPanel } from './src/components/ConnectionPanel';
-import { borderRadius, colors, spacing, typography } from './src/styles/theme';
-import { Header } from './src/components/Header';
-
+import { Header } from './components/Header';
+import { DeviceList } from './components/DeviceList';
+import { ConnectionPanel } from './components/ConnectionPanel';
+import { useBluetooth } from './hooks/useBluetooth';
+import { useDeviceId } from './hooks/useDeviceId';
+import { usePermissions } from './hooks/usePermissions';
+import { colors, spacing, borderRadius, typography } from './styles/theme';
 
 /**
  * Main application component
