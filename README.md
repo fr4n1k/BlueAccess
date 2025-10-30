@@ -1,97 +1,231 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# BlueAccess
 
-# Getting Started
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
+![React Native](https://img.shields.io/badge/React_Native-20232A?style=flat&logo=react&logoColor=61DAFB)
+![Bluetooth](https://img.shields.io/badge/Bluetooth-0082FC?style=flat&logo=bluetooth&logoColor=white)
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+A secure, React Native mobile application for Bluetooth-based door access control. BlueAccess connects to Arduino-powered lock systems via HC-05 Bluetooth modules, enabling keyless entry with unique device identification and token-based authentication.
 
-## Step 1: Start Metro
+<p  align="center"><img src="./image//README/imagenProyectoGit2.jpeg" alt="imagen1" width="200"/><img src="./image//README/imagenProyectoGit.jpeg" alt="imagen2" width="200"/> <img src="./image//README/imagenProyectoGit3.jpeg" alt="imagen2" width="200"/>  </p>
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## ✨ Features
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **🔍 Device Discovery** : Scan and list paired Bluetooth devices
+- **🔐 Secure Authentication** : Token-based access with unique device ID
+- **📱 Real-time Status** : Live connection status monitoring
+- **⚡ Fast Connection** : Quick pairing with HC-05 modules
+- **🛡️ Permission Handling** : Automatic Android Bluetooth permission management
+- **💾 Persistent ID** : Unique device identification stored locally
+- **🎨 Clean UI** : Modern, intuitive interface with visual feedback
 
-```sh
-# Using npm
-npm start
+## 🛠️ Tech Stack
 
-# OR using Yarn
-yarn start
+**Frontend:**
+
+- React Native 0.72+
+- TypeScript 5.0+
+- React Hooks (Custom hooks pattern)
+
+**Libraries:**
+
+- `react-native-bluetooth-classic` - Bluetooth serial communication
+- `@react-native-async-storage/async-storage` - Local data persistence
+- `react-native-uuid` - Unique ID generation
+- `react-native-safe-area-context` - Safe area handling
+
+**Architecture:**
+
+- Custom Hooks for business logic
+- Service layer pattern
+- Component-based architecture
+- TypeScript for type safety
+
+## 📂 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Header.tsx
+│   ├── DeviceList.tsx
+│   ├── DeviceItem.tsx
+│   └── ConnectionPanel.tsx
+├── hooks/              # Custom React hooks
+│   ├── useBluetooth.ts
+│   ├── useDeviceId.ts
+│   └── usePermissions.ts
+├── services/           # Business logic services
+│   ├── bluetoothService.ts
+│   └── storageService.ts
+├── styles/             # Design system
+│   └── theme.ts
+├── types/              # TypeScript type definitions
+│   └── index.ts
+└── App.tsx            # Main application component
 ```
 
-## Step 2: Build and run your app
+## 🚀 Getting Started
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### Prerequisites
 
-### Android
+- Node.js 18+ and npm/yarn
+- React Native development environment setup
+- Android Studio (for Android) or Xcode (for iOS)
+- Physical Android device (Bluetooth doesn't work well on emulators)
+- HC-05 Bluetooth module paired with your device
 
-```sh
-# Using npm
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/fr4n1k/BlueAccess.git
+cd blueaccess
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Install iOS pods (iOS only):
+
+```bash
+cd ios && pod install && cd ..
+```
+
+4. Run the app:
+
+```bash
+# Android
 npm run android
 
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+# iOS
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## 🔧 Configuration
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Android Permissions
 
-## Step 3: Modify your app
+The app automatically requests the following permissions on Android:
 
-Now that you have successfully run the app, let's make changes!
+- `ACCESS_FINE_LOCATION` - Required for Bluetooth scanning
+- `BLUETOOTH_SCAN` - Required for discovering devices
+- `BLUETOOTH_CONNECT` - Required for connecting to devices
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+These are defined in `AndroidManifest.xml`:
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+```xml
+<uses-permission android:name="android.permission.BLUETOOTH" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+```
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+### Arduino Setup
 
-## Congratulations! :tada:
+The app sends data in the format: `TOKEN|DEVICE_ID\n`
 
-You've successfully run and modified your React Native App. :partying_face:
+Example Arduino code to receive:
 
-### Now what?
+```cpp
+void setup() {
+  Serial.begin(9600);
+}
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+void loop() {
+  if (Serial.available()) {
+    String data = Serial.readStringUntil('\n');
+    // Parse token and device ID
+    // data format: "mytoken123|uuid-here"
+  }
+}
+```
 
-# Troubleshooting
+## 💡 How It Works
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+1. **Permission Request** : App requests Bluetooth permissions on launch
+2. **Device ID Generation** : Creates or retrieves unique device ID from storage
+3. **Device Scanning** : User scans for paired Bluetooth devices
+4. **Connection** : User selects a device from the list
+5. **Token Entry** : User enters access token
+6. **Data Transmission** : App sends `TOKEN|DEVICE_ID` to Arduino
+7. **Door Control** : Arduino validates and triggers door mechanism
 
-# Learn More
+## 🏗️ Architecture Decisions
 
-To learn more about React Native, take a look at the following resources:
+### Custom Hooks Pattern
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Separated business logic into custom hooks (`useBluetooth`, `useDeviceId`, `usePermissions`) for better reusability and testability.
+
+### Service Layer
+
+Created dedicated services (`BluetoothService`, `StorageService`) to abstract external dependencies and make code more maintainable.
+
+### TypeScript
+
+Full TypeScript implementation ensures type safety and better developer experience with autocompletion and compile-time error checking.
+
+### Component Composition
+
+Small, focused components promote reusability and easier testing.
+
+## 🐛 Troubleshooting
+
+**Device not connecting:**
+
+- Ensure Bluetooth is enabled on your phone
+- Pair the HC-05 module in phone settings first
+- Check if HC-05 is powered on (LED blinking)
+
+**Permissions denied:**
+
+- Go to Settings > Apps > BlueAccess > Permissions
+- Enable Location and Bluetooth permissions
+
+**Data not sending:**
+
+- Verify HC-05 baud rate matches your Arduino (default: 9600)
+- Check Arduino Serial Monitor for incoming data
+
+## 🔮 Future Enhancements
+
+- [ ] QR code scanning for token entry
+- [ ] Multiple device support
+- [ ] Access log history
+- [ ] Biometric authentication
+- [ ] Wi-Fi fallback connection
+- [ ] Push notifications
+- [ ] iOS support (using BLE)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 👤 Author
+
+**Franco Bollati**
+
+- Email: fran_bollati@hotmail.com
+- LinkedIn: www.linkedin.com/in/franco-bollati-7390a917a
+- GitHub: https://github.com/fr4n1k
+
+## 🙏 Acknowledgments
+
+- HC-05 Bluetooth Module community
+- React Native Bluetooth Classic contributors
+- Arduino community
+
+---
+
+⭐ If you find this project useful, please consider giving it a star!
+
+Built with ❤️ using React Native and TypeScript
